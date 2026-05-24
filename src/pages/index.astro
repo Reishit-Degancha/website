@@ -1,0 +1,105 @@
+---
+import Layout from '../layouts/Layout.astro';
+import ServiceTimes from '../components/ServiceTimes.astro';
+import { getAnnouncements } from '../lib/sheets';
+
+const features = [
+  {
+    number: '01',
+    title: 'לימוד יומי',
+    description: 'שיעורי תורה קבועים בגמרא, הלכה ופרשת השבוע לכל הרמות.',
+  },
+  {
+    number: '02',
+    title: 'אירועים ושמחות',
+    description: 'אולם רחב המתאים לכל סוג של אירוע. ברית, בר מצווה, שבע ברכות.',
+  },
+  {
+    number: '03',
+    title: 'מנחה לכולם',
+    description: 'מניין מנחה קבוע כל יום לעובדים ולתושבי האזור. בואו להתפלל איתנו.',
+  },
+];
+
+// Fetch announcements from Google Sheets
+const sheetAnnouncements = await getAnnouncements();
+
+// Fallback if sheet fetch fails
+const fallbackAnnouncements = [
+  {
+    title: 'שיעור תורה מיוחד',
+    content: 'השבוע יתקיים שיעור מיוחד בנושא הכנה לחג עם הרב כהן. יום רביעי בשעה 20:00.',
+  },
+  {
+    title: 'קידוש מרכזי',
+    content: 'בשבת הקרובה קידוש מרכזי לכבוד בר המצווה של יוסי לוי. כולם מוזמנים!',
+  },
+];
+
+const announcements = sheetAnnouncements.length > 0 ? sheetAnnouncements : fallbackAnnouncements;
+---
+
+<Layout title="ראשית דגנך - בית כנסת לתפילה ולקהילה">
+  <!-- Hero -->
+  <div class="max-w-[1100px] mx-auto px-8 pt-8">
+    <section 
+      class="relative h-[480px] bg-cover bg-center flex items-end"
+      style="background-image: url('/hero.png')"
+    >
+      <!-- Gradient overlay -->
+      <div class="absolute inset-0 bg-gradient-to-t from-[rgba(61,53,48,0.9)] via-[rgba(61,53,48,0.3)] to-transparent"></div>
+      
+      <div class="relative z-10 p-10 text-white">
+        <h1 class="text-4xl md:text-5xl font-bold mb-3 leading-tight">בית כנסת לתפילה ולקהילה</h1>
+        <p class="text-lg opacity-90 mb-6 max-w-lg">
+          קהילה אורתודוקסית קטנה ופתוחה. תפילות יומיומיות, שיעורי תורה ושיח חברתי — בלב השכונה.
+        </p>
+        <div class="flex gap-3">
+          <a href="#times" class="btn btn-primary">זמני תפילה</a>
+          <a href="/about" class="btn btn-outline">אודות הקהילה</a>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <!-- Main Content -->
+  <main class="max-w-[1100px] mx-auto px-8 py-12">
+    <!-- Service Times -->
+    <ServiceTimes />
+
+    <!-- Announcements -->
+    <section class="bg-surface p-7 border border-border mb-14">
+      <div class="flex justify-between items-baseline mb-5 pb-3 border-b border-border-light">
+        <h3 class="text-lg font-bold">הודעות</h3>
+        <a href="#" class="text-sm text-primary font-medium hover:underline">כל ההודעות</a>
+      </div>
+      
+      {announcements.map((item, index) => (
+        <div class={`py-3 ${index < announcements.length - 1 ? 'border-b border-border-light' : ''}`}>
+          <h4 class="font-semibold text-text mb-1">{item.title}</h4>
+          <p class="text-sm text-text-muted">{item.content}</p>
+        </div>
+      ))}
+    </section>
+
+    <!-- Features -->
+    <section class="grid grid-cols-1 md:grid-cols-3 mb-14">
+      {features.map((feature) => (
+        <div class="bg-surface p-7 border border-border">
+          <span class="text-xs text-primary font-semibold mb-3 block">{feature.number}</span>
+          <h3 class="text-lg font-bold text-text mb-2">{feature.title}</h3>
+          <p class="text-sm text-text-muted leading-relaxed">{feature.description}</p>
+        </div>
+      ))}
+    </section>
+
+    <!-- CTA -->
+    <section class="bg-footer text-white p-12 text-center mb-14">
+      <h2 class="text-2xl font-bold mb-2">מצטרפים ראשונה?</h2>
+      <p class="opacity-90 mb-6 max-w-md mx-auto">
+        תפילה פשוטה, לא צריך להכיר, לא צריך להירשם, ולא צריך לדעת הכל. בואו בזמן התפילה הקרובה, ותשמחו יחד איתנו בסימנים.
+      </p>
+      <a href="/contact" class="btn bg-white text-primary hover:bg-background">צרו קשר</a>
+    </section>
+  </main>
+</Layout>

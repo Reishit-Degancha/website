@@ -1,0 +1,29 @@
+@import url('https://fonts.googleapis.com/css2?family=Frank+Ruhl+Libre:wght@400;500;600;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    font-family: 'Frank Ruhl Libre', serif;
+  }
+  
+  body {
+    @apply bg-background text-text leading-relaxed;
+  }
+}
+
+@layer components {
+  .btn {
+    @apply px-6 py-3 font-medium transition-all duration-200 cursor-pointer;
+  }
+  
+  .btn-primary {
+    @apply bg-primary text-white hover:bg-primary-hover;
+  }
+  
+  .btn-outline {
+    @apply bg-white/15 text-white border border-white/40 hover:bg-white/25;
+  }
+}

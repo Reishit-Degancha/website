@@ -1,0 +1,60 @@
+---
+import { getServiceTimes } from '../lib/sheets';
+
+const sections = await getServiceTimes();
+
+// Fallback data if sheet fetch fails
+const fallbackSections = [
+  {
+    title: 'תפילות שבת',
+    subtitle: 'שבת פרשת וירא • ט״ו-ט״ז חשון',
+    items: [
+      { event: 'פתח ניב שפת', time: '19:00' },
+      { event: 'קבלת שבת', time: '19:15' },
+      { event: 'שחרית', time: '08:45' },
+      { event: 'מנחה', time: '18:30' },
+      { event: 'הבדלה', time: '20:10' },
+    ],
+  },
+  {
+    title: 'ימי חול',
+    subtitle: 'ראשון עד שישי',
+    items: [
+      { event: 'שחרית א-ד', time: '07:45' },
+      { event: 'שחרית ה', time: '07:00' },
+      { event: 'שחרית ו', time: '06:00' },
+      { event: 'מנחה א-ד', time: '19:15' },
+      { event: 'מעריב א-ד', time: '20:30' },
+    ],
+  },
+];
+
+const displaySections = sections.length > 0 ? sections : fallbackSections;
+---
+
+<section id="times" class="mb-14">
+  <div class="mb-6">
+    <p class="text-sm text-text-light mb-1">זמנים משתנים לפי העונה</p>
+    <h2 class="text-2xl font-bold text-text">מתפללים אצלנו</h2>
+  </div>
+
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+    {displaySections.map((section) => (
+      <div class="bg-[#f7f0e0] p-7 border border-border">
+        <h3 class="text-lg font-bold text-text mb-1">{section.title}</h3>
+        {section.subtitle && (
+          <p class="text-sm text-text-light mb-5 pb-3 border-b border-border-light">
+            {section.subtitle}
+          </p>
+        )}
+        
+        {section.items.map((item) => (
+          <div class="flex justify-between items-baseline py-2">
+            <span class="text-text">{item.event}</span>
+            <span class="text-text font-semibold tabular-nums">{item.time}</span>
+          </div>
+        ))}
+      </div>
+    ))}
+  </div>
+</section>

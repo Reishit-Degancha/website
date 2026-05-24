@@ -1,0 +1,31 @@
+---
+const navLinks = [
+  { href: '/', label: 'בית' },
+  { href: '/about', label: 'אודות הקהילה' },
+  { href: '/#times', label: 'זמני תפילה' },
+  { href: '/room-rental', label: 'השכרת האולם' },
+  { href: '/donate', label: 'תרומות' },
+];
+---
+
+<header class="sticky top-0 z-50 bg-background/95 border-b border-border backdrop-blur-sm">
+  <div class="max-w-[1100px] mx-auto px-8 py-4 flex justify-between items-center">
+    <a href="/" class="text-2xl font-bold text-text">ראשית דגנך</a>
+    <nav class="hidden md:flex gap-8">
+      {navLinks.map((link) => (
+        <a 
+          href={link.href} 
+          class="text-text-muted font-medium hover:text-primary transition-colors"
+        >
+          {link.label}
+        </a>
+      ))}
+    </nav>
+    <!-- Mobile menu button (simplified for now) -->
+    <button class="md:hidden text-text-muted" aria-label="תפריט">
+      <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+      </svg>
+    </button>
+  </div>
+</header>
