@@ -55,8 +55,8 @@ const announcements = sheetAnnouncements.length > 0 ? sheetAnnouncements : fallb
           קהילה אורתודוקסית קטנה ופתוחה. תפילות יומיומיות, שיעורי תורה ושיח חברתי — בלב השכונה.
         </p>
         <div class="flex gap-3">
-          <a href="#times" class="btn btn-primary">זמני תפילה</a>
-          <a href="/about" class="btn btn-outline">אודות הקהילה</a>
+          <a href={`${import.meta.env.BASE_URL}#times`} class="btn btn-primary">זמני תפילה</a>
+          <a href={`${import.meta.env.BASE_URL}about`} class="btn btn-outline">אודות הקהילה</a>
         </div>
       </div>
     </section>
@@ -99,7 +99,7 @@ const announcements = sheetAnnouncements.length > 0 ? sheetAnnouncements : fallb
       <p class="opacity-90 mb-6 max-w-md mx-auto">
         תפילה פשוטה, לא צריך להכיר, לא צריך להירשם, ולא צריך לדעת הכל. בואו בזמן התפילה הקרובה, ותשמחו יחד איתנו בסימנים.
       </p>
-      <a href="/contact" class="btn bg-white text-primary hover:bg-background">צרו קשר</a>
+      <a href={`${import.meta.env.BASE_URL}contact`} class="btn bg-white text-primary hover:bg-background">צרו קשר</a>
     </section>
   </main>
 </Layout>

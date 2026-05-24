@@ -1,16 +1,18 @@
 ---
+const base = import.meta.env.BASE_URL;
+
 const navLinks = [
-  { href: '/', label: 'בית' },
-  { href: '/about', label: 'אודות הקהילה' },
-  { href: '/#times', label: 'זמני תפילה' },
-  { href: '/room-rental', label: 'השכרת האולם' },
-  { href: '/donate', label: 'תרומות' },
+  { href: base, label: 'בית' },
+  { href: `${base}about`, label: 'אודות הקהילה' },
+  { href: `${base}#times`, label: 'זמני תפילה' },
+  { href: `${base}room-rental`, label: 'השכרת האולם' },
+  { href: `${base}donate`, label: 'תרומות' },
 ];
 ---
 
 <header class="sticky top-0 z-50 bg-background/95 border-b border-border backdrop-blur-sm">
   <div class="max-w-[1100px] mx-auto px-8 py-4 flex justify-between items-center">
-    <a href="/" class="text-2xl font-bold text-text">ראשית דגנך</a>
+    <a href={base} class="text-2xl font-bold text-text">ראשית דגנך</a>
     <nav class="hidden md:flex gap-8">
       {navLinks.map((link) => (
         <a 
