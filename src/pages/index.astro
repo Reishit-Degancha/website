@@ -44,7 +44,7 @@ const announcements = sheetAnnouncements.length > 0 ? sheetAnnouncements : fallb
   <div class="max-w-[1100px] mx-auto px-8 pt-8">
     <section 
       class="relative h-[480px] bg-cover bg-center flex items-end"
-      style="background-image: url('/hero.png')"
+      style={`background-image: url('${import.meta.env.BASE_URL}hero.png')`}
     >
       <!-- Gradient overlay -->
       <div class="absolute inset-0 bg-gradient-to-t from-[rgba(61,53,48,0.9)] via-[rgba(61,53,48,0.3)] to-transparent"></div>
