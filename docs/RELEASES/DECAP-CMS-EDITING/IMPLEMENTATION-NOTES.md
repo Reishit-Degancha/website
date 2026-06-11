@@ -1,7 +1,7 @@
 # Decap CMS Integration — Implementation Notes
 
 > **Epic:** Decap CMS Integration  
-> **Status:** Pending  
+> **Status:** Complete (Code) - Pending (Netlify Setup)  
 > **Last Updated:** June 11, 2026  
 > **Code:** reishitdegancha-main  
 > **Tickets:** See PRD.md for ticket index
@@ -22,7 +22,7 @@ Enable non-technical content editing for the ראשית דגנך synagogue websi
 
 | Path | Change |
 |------|--------|
-| `package.json` | Add `decap-cms-app` dependency |
+| `package.json` | Add `@tailwindcss/typography` plugin |
 | `public/admin/index.html` | Create - CMS UI entry point |
 | `public/admin/config.yml` | Create - CMS configuration |
 | `src/content/config.ts` | Create - Astro content collection schema |
@@ -44,15 +44,15 @@ Enable non-technical content editing for the ראשית דגנך synagogue websi
 
 | # | Ticket | Status | Commit | Notes |
 |---|--------|--------|--------|-------|
-| 1 | Content Infrastructure | ⬜ Not started | — | |
-| 2 | Authentication Setup | ⬜ Not started | — | |
-| 3 | Content Collections Setup | ⬜ Not started | — | |
-| 4 | About Page Migration | ⬜ Not started | — | |
-| 5 | Donate Page Migration | ⬜ Not started | — | |
-| 6 | Room Rental Page Migration | ⬜ Not started | — | |
-| 7 | Membership Page Migration | ⬜ Not started | — | |
-| 8 | Community Page Migration | ⬜ Not started | — | |
-| 9 | Documentation Update | ⬜ Not started | — | |
+| 1 | Content Infrastructure | ✅ Complete | dad03c6 | Typography plugin, admin files created |
+| 2 | Authentication Setup | ⚠️ Pending Dashboard | dad03c6 | Code ready, needs Netlify setup |
+| 3 | Content Collections Setup | ✅ Complete | dad03c6 | Schema created |
+| 4 | About Page Migration | ✅ Complete | dad03c6 | Markdown created |
+| 5 | Donate Page Migration | ✅ Complete | dad03c6 | Markdown created |
+| 6 | Room Rental Page Migration | ✅ Complete | dad03c6 | Markdown created |
+| 7 | Membership Page Migration | ✅ Complete | dad03c6 | CTA preserved in template |
+| 8 | Community Page Migration | ✅ Complete | dad03c6 | Markdown created |
+| 9 | Documentation Update | ✅ Complete | dad03c6 | SETUP.md updated |
 
 **Status legend:** ⬜ Not started | 🟡 In progress | ✅ Complete | ⚠️ Blocked
 
@@ -62,7 +62,7 @@ Enable non-technical content editing for the ראשית דגנך synagogue websi
 
 ### Ticket 1: Content Infrastructure
 
-**Status:** ⬜ Not started
+**Status:** ✅ Complete
 
 **Summary:** Install Decap CMS and create admin interface files (`index.html`, `config.yml`).
 
@@ -79,7 +79,18 @@ Enable non-technical content editing for the ראשית דגנך synagogue websi
 
 ### Ticket 2: Authentication Setup
 
-**Status:** ⬜ Not started
+**Status:** ⚠️ Code Complete, Dashboard Pending
+
+**Implementation:**
+- Config.yml includes `site_url`, `display_url`, `identity_url`, `gateway_url`
+- Netlify Identity widget loaded in admin/index.html
+
+**Remaining:**
+- Create Netlify site (Import from Git: Reishit-Degancha/website)
+- Disable Netlify builds (Site settings → Stop builds)
+- Enable Identity + Git Gateway
+- Configure GitHub OAuth app
+- Invite content editor(s)
 
 **Summary:** Configure Netlify Identity service for CMS authentication.
 
@@ -97,7 +108,13 @@ Enable non-technical content editing for the ראשית דגנך synagogue websi
 
 ### Ticket 3: Content Collections Setup
 
-**Status:** ⬜ Not started
+**Status:** ✅ Complete
+
+**Implementation:**
+- Created `src/content/config.ts` with Zod schema
+- Schema: title (required string), description (optional string)
+- Type: 'content' for Markdown files
+- All 5 page content files created in `src/content/pages/`
 
 **Summary:** Configure Astro content collections with Zod schema.
 
@@ -113,25 +130,37 @@ Enable non-technical content editing for the ראשית דגנך synagogue websi
 
 ### Ticket 4-8: Page Migrations
 
-**Status:** ⬜ Not started
+**Status:** ✅ Complete
 
 **Summary:** Extract content from 5 Astro pages to Markdown files.
 
-**Key decisions / tradeoffs:**
-- Simple Markdown structure vs. structured YAML frontmatter
-- Chose Markdown for simplicity; structured data would preserve more styling but adds complexity
-- CTA buttons (membership page) kept in Astro template to use `BASE_URL` correctly
+**Implementation:**
+- All 5 pages migrated: about, donate, room-rental, membership, community
+- Pages use `getEntry('pages', 'slug')` to load content
+- Content rendered with `<Content />` inside `prose prose-lg max-w-none` wrapper
+- Membership page CTA button kept in template (not in Markdown)
+
+**Visual Changes:**
+- Card layouts (donate, community) became Markdown sections with H3 headings
+- Styling handled by @tailwindcss/typography prose plugin
+- Content preserved; presentation simplified (acceptable tradeoff per PRD)
 
 **Known issues / gotchas:**
-- `getEntry('pages', 'slug')` uses slug without file extension
+- `getEntry('pages', 'slug')` uses slug without file extension (e.g., 'room-rental')
 - `await page.render()` returns `{ Content }` component for `<Content />`
-- Must preserve existing CSS classes (`prose`, `bg-surface`, etc.)
+- Wrapper divs preserve `bg-surface`, `border`, `border-border` styling
 
 ---
 
 ### Ticket 9: Documentation Update
 
-**Status:** ⬜ Not started
+**Status:** ✅ Complete
+
+**Implementation:**
+- Added CMS section to docs/SETUP.md before "Future TODOs"
+- Documented: editable pages, boundaries, access URL, editing workflow
+- Updated Quick Reference table to include CMS path
+- Hebrew labels preserved (דפי תוכן)
 
 **Summary:** Add CMS usage section to SETUP.md.
 
@@ -149,7 +178,10 @@ Enable non-technical content editing for the ראשית דגנך synagogue websi
 
 | Ticket | Deviation | Reason |
 |--------|-----------|--------|
-| *(none yet)* | | |
+| DECAP-01 | Added `@tailwindcss/typography` instead of `decap-cms-app` | Typography plugin is required for prose classes; Decap loaded from CDN |
+| DECAP-05/06/08 | Card layouts → Markdown sections | Simpler, acceptable per PRD decision |
+| All | Visual styling via prose plugin | Slightly different from hand-tuned utilities, but consistent |
+| DECAP-09 | Added CMS section + updated Quick Reference | More complete than minimal addition |
 
 ---
 
@@ -188,4 +220,4 @@ pnpm preview
 
 ---
 
-*Last updated: June 11, 2026*
+*Last updated: June 11, 2026 - Implementation Complete*
