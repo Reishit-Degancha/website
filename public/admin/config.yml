@@ -3,7 +3,7 @@ backend:
   branch: main
 
 # Uncomment for local testing (saves to filesystem instead of git)
-# local_backend: true
+local_backend: true
 
 # Site URLs for subdirectory hosting
 site_url: https://reishit-degancha.github.io/website
