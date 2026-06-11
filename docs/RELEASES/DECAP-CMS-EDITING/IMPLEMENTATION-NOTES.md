@@ -85,12 +85,28 @@ Enable non-technical content editing for the ראשית דגנך synagogue websi
 - Config.yml includes `site_url`, `display_url`, `identity_url`, `gateway_url`
 - Netlify Identity widget loaded in admin/index.html
 
-**Remaining:**
-- Create Netlify site (Import from Git: Reishit-Degancha/website)
-- Disable Netlify builds (Site settings → Stop builds)
-- Enable Identity + Git Gateway
-- Configure GitHub OAuth app
-- Invite content editor(s)
+**Netlify Setup Steps:**
+
+1. **Create site**: Add new site → Import from Git → Select `Reishit-Degancha/website`
+   - This links the repo (required for Git Gateway)
+   
+2. **DISABLE BUILDS** (critical - site is already on GitHub Pages):
+   - Site settings → Build & deploy → Build settings
+   - Click **Stop builds** (or set Build command to `exit 0`)
+   - This prevents Netlify from deploying (GitHub Actions handles that)
+   
+3. **Enable Identity**: Site settings → Identity → Enable Identity
+
+4. **Enable Git Gateway**: Identity settings → Git Gateway → Enable
+
+5. **Configure OAuth** (optional): Identity → External providers → GitHub
+   - Create GitHub OAuth app at github.com/settings/applications/new
+   - Homepage URL: `https://reishit-degancha.github.io/website/`
+   - Callback URL: `https://[your-site-name].netlify.app/.netlify/identity/github/callback`
+
+6. **Invite users**: Identity → Invite users
+
+**Note**: Netlify is only for authentication/Git Gateway. All hosting remains on GitHub Pages.
 
 **Summary:** Configure Netlify Identity service for CMS authentication.
 
@@ -201,9 +217,24 @@ pnpm build
 pnpm preview
 ```
 
-**Netlify Identity Testing:**
+**Local CMS Testing (without Netlify):**
 ```bash
-# Local development with Netlify Identity
+# 1. Add local_backend: true to config.yml (one-time)
+# 2. Start Astro dev server
+pnpm dev
+
+# 3. In another terminal, start Decap local server
+npx decap-server
+
+# 4. Visit http://localhost:4321/website/admin/
+#    - Login is bypassed in local mode
+#    - Edits save directly to local files (no git commits)
+#    - Refresh browser to see changes
+```
+
+**Netlify Identity Testing (production auth):**
+```bash
+# After Netlify dashboard setup:
 # Visit: http://localhost:4321/website/admin/
 # Click login, complete OAuth flow
 ```
