@@ -494,6 +494,77 @@ The page will be accessible at `/website/new-page` (replace dashes with your URL
 
 ---
 
+## Content Management System (CMS)
+
+The site includes a web-based Content Management System (Decap CMS) for editing page content without touching code.
+
+### What Can Be Edited via CMS
+
+| Page | URL | Content |
+|------|-----|---------|
+| About | `/about` | About text, vision, rabbi bio |
+| Donate | `/donate` | Donation instructions, payment methods |
+| Room Rental | `/room-rental` | Hall info, amenities, contact |
+| Membership | `/membership` | Benefits, fees, welcome text |
+| Community | `/community` | Class schedule, activities |
+
+### What Requires Code Changes
+
+These changes **cannot** be made via CMS and require developer assistance:
+
+- **Homepage content** — Hero, features, CTAs (hardcoded by design)
+- **New pages** — Creating new routes requires code
+- **Navigation links** — Header/Footer navigation
+- **Page structure** — Layout changes, new sections
+- **Styling changes** — Colors, fonts, spacing
+- **Contact information in footer** — Email, phone, address
+
+### How to Access the CMS
+
+1. Visit: `https://reishit-degancha.github.io/website/admin/`
+2. Click "Login with Netlify Identity"
+3. Use your GitHub account or email/password
+
+### How to Edit Content
+
+1. **Select a page** from the "דפי תוכן" (Pages) collection
+2. **Edit content** in the WYSIWYG editor (like Google Docs)
+3. **Click "Publish"** to save changes immediately
+4. Changes are automatically committed to git and deployed
+
+**Note:** Changes go live immediately. There is no draft/approval workflow — make edits carefully.
+
+### Content Formatting Guide
+
+The editor supports Markdown formatting:
+
+| You Type | Result |
+|----------|--------|
+| `## Heading` | H2 heading (large) |
+| `### Heading` | H3 heading (medium) |
+| `**bold**` | **bold text** |
+| `- item` | Bullet list |
+| `[text](url)` | [Link](url) |
+
+### Inviting New Content Editors
+
+1. Go to [Netlify Dashboard](https://app.netlify.com/)
+2. Select the site: `reishit-degancha-cms`
+3. Go to **Identity** → **Invite users**
+4. Enter email address
+5. User receives invitation email with login link
+
+### Troubleshooting
+
+| Problem | Solution |
+|---------|----------|
+| Can't log in | Check invitation email and click link to set password |
+| Changes not appearing | Wait 2-3 minutes for build, then hard refresh (Ctrl+Shift+R) |
+| Page missing in CMS | Page may be code-only (homepage), contact developer |
+| Edit button disabled | Refresh the page and log in again |
+
+---
+
 ## Future TODOs
 
 - [ ] Create `/contact` page (currently just a placeholder link)
@@ -517,7 +588,8 @@ The page will be accessible at `/website/new-page` (replace dashes with your URL
 
 | What | Where | How |
 |------|-------|-----|
-| Change a static page | `src/pages/[name].astro` | Edit file → commit → push |
+| Change page content (About, Donate, etc.) | CMS at `/admin` | Log in → edit → publish |
+| Change a static page (code) | `src/pages/[name].astro` | Edit file → commit → push |
 | Update service times | Google Sheet "times" tab | Edit → click "פרסם לאתר" |
 | Add announcement | Google Sheet "announcements" tab | Add row → click "פרסם לאתר" |
 | Change colors/fonts | `src/styles/global.css` or `tailwind.config.mjs` | Edit → commit → push |

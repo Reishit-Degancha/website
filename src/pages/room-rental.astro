@@ -1,31 +1,22 @@
 ---
 import Layout from '../layouts/Layout.astro';
+import { getEntry } from 'astro:content';
+
+const page = await getEntry('pages', 'room-rental');
+
+if (!page) {
+  throw new Error('Room rental page content not found');
+}
+
+const { Content } = await page.render();
 ---
 
-<Layout title="השכרת האולם - ראשית דגנך">
+<Layout title={`${page.data.title} - ראשית דגנך`}>
   <main class="max-w-[1100px] mx-auto px-8 py-12">
-    <h1 class="text-3xl font-bold mb-6">השכרת האולם</h1>
+    <h1 class="text-3xl font-bold mb-6">{page.data.title}</h1>
     
-    <div class="bg-surface p-8 border border-border">
-      <p class="text-text-muted leading-relaxed mb-8">
-        האולם שלנו מתאים לאירועים משפחתיים ולשמחות. ברית מילה, בר/בת מצווה, שבע ברכות, 
-        ואירועים קהילתיים.
-      </p>
-      
-      <h2 class="text-xl font-bold text-text mb-4">פרטי האולם</h2>
-      <ul class="list-disc list-inside text-text-muted space-y-2 mb-8">
-        <li>קיבולת: עד 120 איש</li>
-        <li>מטבח מאובזר (חלבי/פרווה)</li>
-        <li>מערכת הגברה</li>
-        <li>חנייה צמודה</li>
-        <li>נגישות לנכים</li>
-      </ul>
-      
-      <h2 class="text-xl font-bold text-text mb-4">ליצירת קשר ותיאום</h2>
-      <p class="text-text-muted">
-        טלפון: 054-1234567<br/>
-        אימייל: events@reishit-degancha.org.il
-      </p>
+    <div class="bg-surface p-8 border border-border prose prose-lg max-w-none">
+      <Content />
     </div>
   </main>
 </Layout>

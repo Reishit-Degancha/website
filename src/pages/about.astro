@@ -1,26 +1,22 @@
 ---
 import Layout from '../layouts/Layout.astro';
+import { getEntry } from 'astro:content';
+
+const page = await getEntry('pages', 'about');
+
+if (!page) {
+  throw new Error('About page content not found');
+}
+
+const { Content } = await page.render();
 ---
 
-<Layout title="אודות הקהילה - ראשית דגנך">
+<Layout title={`${page.data.title} - ראשית דגנך`}>
   <main class="max-w-[1100px] mx-auto px-8 py-12">
-    <h1 class="text-3xl font-bold mb-6">אודות הקהילה</h1>
+    <h1 class="text-3xl font-bold mb-6">{page.data.title}</h1>
     
     <div class="bg-surface p-8 border border-border prose prose-lg max-w-none">
-      <p class="text-text-muted leading-relaxed mb-6">
-        בית הכנסת "ראשית דגנך" הוקם בשנת תשפ"ב במטרה להקים קהילה חמה ומקבלת בלב השכונה. 
-        אנו מאמינים בתפילה משותפת, בלימוד תורה ובגמילות חסדים.
-      </p>
-      
-      <h2 class="text-xl font-bold text-text mt-8 mb-4">החזון שלנו</h2>
-      <p class="text-text-muted leading-relaxed mb-6">
-        ליצור מקום שבו כל יהודי ירגיש בבית. מקום שבו ניתן להתפלל, ללמוד ולחגוג יחד.
-      </p>
-      
-      <h2 class="text-xl font-bold text-text mt-8 mb-4">הרב</h2>
-      <p class="text-text-muted leading-relaxed">
-        [מידע על רב הקהילה יתווסף כאן]
-      </p>
+      <Content />
     </div>
   </main>
 </Layout>

@@ -1,0 +1,36 @@
+backend:
+  name: git-gateway
+  branch: main
+
+# Site URLs for subdirectory hosting
+site_url: https://reishit-degancha.github.io/website
+display_url: https://reishit-degancha.github.io/website
+
+media_folder: "public/uploads"
+public_folder: "/website/uploads"
+
+# Disable new page creation (pages are defined in code)
+collections:
+  - name: "pages"
+    label: "דפי תוכן"
+    folder: "src/content/pages"
+    create: false
+    delete: false
+    slug: "{{slug}}"
+    editor:
+      preview: false
+    fields:
+      - label: "כותרת"
+        name: "title"
+        widget: "string"
+        required: true
+
+      - label: "תיאור (ל-SEO)"
+        name: "description"
+        widget: "string"
+        required: false
+
+      - label: "תוכן"
+        name: "body"
+        widget: "markdown"
+        required: true
