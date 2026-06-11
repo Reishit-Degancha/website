@@ -521,7 +521,7 @@ These changes **cannot** be made via CMS and require developer assistance:
 
 ### How to Access the CMS
 
-1. Visit: `https://reishit-degancha.github.io/website/admin/`
+1. Visit: `https://rdegancha.netlify.app/admin/`
 2. Click "Login with Netlify Identity"
 3. Use your GitHub account or email/password
 
@@ -589,9 +589,9 @@ The editor supports Markdown formatting:
 | What | Where | How |
 |------|-------|-----|
 | Change page content (About, Donate, etc.) | CMS at `/admin` | Log in → edit → publish |
-| Change a static page (code) | `src/pages/[name].astro` | Edit file → commit → push |
 | Update service times | Google Sheet "times" tab | Edit → click "פרסם לאתר" |
 | Add announcement | Google Sheet "announcements" tab | Add row → click "פרסם לאתר" |
+| Deploy site | Push to main | Git commit → Netlify auto-deploys |
 | Change colors/fonts | `src/styles/global.css` or `tailwind.config.mjs` | Edit → commit → push |
 | Change header/footer | `src/components/Header.astro` or `Footer.astro` | Edit → commit → push |
 | Deploy manually | GitHub Actions | Go to Actions → Run workflow |

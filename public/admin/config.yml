@@ -5,12 +5,12 @@ backend:
 # Uncomment for local testing (saves to filesystem instead of git)
 local_backend: true
 
-# Site URLs for subdirectory hosting
-site_url: https://reishit-degancha.github.io/website
-display_url: https://reishit-degancha.github.io/website
+# Site URL
+site_url: https://rdegancha.netlify.app
+display_url: https://rdegancha.netlify.app
 
 media_folder: "public/uploads"
-public_folder: "/website/uploads"
+public_folder: "/uploads"
 
 # Disable new page creation (pages are defined in code)
 collections:
