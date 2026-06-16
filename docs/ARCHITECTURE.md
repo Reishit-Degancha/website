@@ -5,33 +5,35 @@ A comprehensive guide to how the ראשית דגנך website works and how to ma
 ## Overview
 
 ```
-SOURCES              COMMITS               HOSTING
+SOURCES                                BUILD & DEPLOY           HOSTING
 
-┌──────────────┐                ┌──────────────┐        ┌──────────────┐
-│ Google Sheet │                │   GitHub     │        │   Netlify    │
-│ (Times)      │──→ commit ────▶│ Repository   │──→────▶│ Build, Test  │
-└──────────────┘    (via Apps   │ (Source of   │  Auto- │    & Deploy  │
-                     Script)     │   Truth)     │ build  │              │
-                                │              │        │ Live Site:   │
-┌──────────────┐                │              │        │ rdegancha.   │
-│ Decap CMS    │──→ commit ────▶│              │        │ netlify.app  │
-│ (Content)    │    (via Git)   │              │        │              │
-└──────────────┘                └──────────────┘        └──────────────┘
+┌──────────────┐                   ┌──────────────┐        ┌──────────────┐
+│ Google Sheet │                   │   GitHub     │        │   GitHub     │
+│ (Times)      │─────→ trigger ──▶│ Actions      │──→────▶│ Pages        │
+└──────────────┘  (via AppsScript) │ (Builds &    │        │ (Free static │
+                                   │  deploys)    │        │  hosting)    │
+                                   └──────────────┘        └──────────────┘
+
+┌──────────────┐
+│ Markdown     │──→ commit ──────▶
+│ Files        │    (GitHub UI)   │
+└──────────────┘                   │
 ```
 
 **The flow:**
 
-1. **Sources → GitHub** (left to middle)
-   - **Google Sheets**: Admin updates times → clicks "פרסם לאתר" → Apps Script makes API call → creates commit in GitHub
-   - **Decap CMS**: Editor makes changes → clicks "Publish" → automatically commits to GitHub
+1. **Google Sheets → GitHub Actions** (left path)
+   - Admin updates times in Google Sheet → clicks "פרסם לאתר" → Apps Script triggers GitHub Actions workflow
 
-2. **GitHub → Netlify** (middle to right)
-   - Every commit to GitHub triggers a build
-   - Netlify rebuilds the entire site
-   - Fresh data is fetched (from Google Sheets API)
-   - Site is deployed to the live URL
+2. **Content edits → GitHub → GitHub Actions** (bottom path)
+   - Edit markdown files directly in GitHub (rare) → commit triggers GitHub Actions
 
-**Result**: Whether updates come from Google Sheets or Decap CMS, they both end up as commits in GitHub, which automatically triggers a rebuild and deployment.
+3. **GitHub Actions → GitHub Pages** (right side)
+   - Workflow builds the Astro site
+   - Fetches fresh data from Google Sheets API
+   - Deploys to GitHub Pages (free, no external services)
+
+**Result**: Everything lives in GitHub. No external hosting or identity management needed.
 
 ---
 
@@ -43,11 +45,11 @@ SOURCES              COMMITS               HOSTING
 | **Styling** | Tailwind CSS | Utility-first CSS with custom theme |
 | **Typography** | @tailwindcss/typography | Markdown content styling |
 | **Font** | Frank Ruhl Libre | Hebrew serif font |
-| **Hosting** | Netlify | Build, deploy, and hosting |
-| **CMS** | Decap CMS | Content editing interface |
-| **Auth** | Netlify Identity | User authentication |
+| **Hosting** | GitHub Pages | Free static hosting |
 | **Content** | Google Sheets | Service times & announcements |
 | **Language** | TypeScript | Type-safe code |
+
+**Note**: Content is edited directly in GitHub's web interface (rare changes). No CMS or authentication layer needed.
 
 ---
 
@@ -209,17 +211,27 @@ website/
 
 ---
 
-## Content Management System (CMS)
+## Content Editing
 
-### What Can Be Edited via CMS
+### What Can Be Edited
 
-| Page | URL | Editable Content |
-|------|-----|------------------|
-| About | `/about` | About text, vision, rabbi bio |
-| Donate | `/donate` | Donation instructions, payment methods |
-| Room Rental | `/room-rental` | Hall info, amenities, contact |
-| Membership | `/membership` | Benefits, fees, welcome text |
-| Community | `/community` | Class schedule, activities |
+| Page | URL | File Location | How to Edit |
+|------|-----|---------------|-------------|
+| About | `/about` | `src/content/pages/about.md` | Edit on GitHub |
+| Donate | `/donate` | `src/content/pages/donate.md` | Edit on GitHub |
+| Room Rental | `/room-rental` | `src/content/pages/room-rental.md` | Edit on GitHub |
+| Membership | `/membership` | `src/content/pages/membership.md` | Edit on GitHub |
+| Community | `/community` | `src/content/pages/community.md` | Edit on GitHub |
+| Service Times | `/` (homepage) | Google Sheet → click "פרסם לאתר" | Sheet button |
+
+### How to Edit Content on GitHub
+
+1. Go to `https://github.com/Reishit-Degancha/website`
+2. Navigate to `src/content/pages/[page].md`
+3. Click the **Edit** (pencil) icon
+4. Make changes in the markdown editor
+5. Click **Commit changes** → write a brief description
+6. Changes go live within 2 minutes
 
 ### What Requires Code Changes
 
@@ -231,40 +243,34 @@ These are hardcoded in `.astro` files and require a developer:
 - Styling (colors, fonts, spacing)
 - New pages or layout changes
 
-### CMS Access
-
-**URL**: `https://rdegancha.netlify.app/admin/`
-
-**Login**: Via Netlify Identity (GitHub or email/password)
-
-**User Management**:
-1. Go to Netlify Dashboard → Site → Identity
-2. Invite users by email
-3. Users receive invitation link
-4. First login sets password
+**Tip**: The preview tab in GitHub's editor shows how markdown will render.
 
 ---
 
-## User Management
+## Repository Access
 
-### Netlify Identity Setup
+Since all content lives in GitHub, editors need GitHub access:
 
-Located in: Netlify Dashboard → Site → Identity
+### Giving Someone Edit Access
 
-**Settings**:
-- Registration: Invite only (security)
-- External providers: GitHub enabled
-- Git Gateway: Enabled (required for CMS commits)
+1. Go to `https://github.com/Reishit-Degancha/website`
+2. Settings → Manage access → Invite a collaborator
+3. Enter their GitHub username or email
+4. They receive an invitation email
+5. Once accepted, they can edit files directly
 
-**Inviting Users**:
+### Content Editing Workflow
+
 ```
-1. Netlify Dashboard → Identity → Invite users
-2. Enter email address
-3. User receives invitation email
-4. Click link → set password → logged in
+1. Go to https://github.com/Reishit-Degancha/website
+2. Navigate to src/content/pages/
+3. Click the file to edit (e.g., about.md)
+4. Click the pencil (✎) icon
+5. Make changes
+6. Scroll down, write a commit message (e.g., "Update rabbi bio")
+7. Click "Commit changes"
+8. Site rebuilds and deploys automatically (~2 min)
 ```
-
-**Note**: Invite links expire. If expired, resend from dashboard.
 
 ---
 
@@ -337,8 +343,10 @@ git add .
 git commit -m "Description of changes"
 git push
 
-# Netlify automatically builds and deploys
+# GitHub Actions automatically builds and deploys to GitHub Pages
 ```
+
+**Live Site**: `https://reishit-degancha.github.io/website` (or your custom domain)
 
 ---
 
@@ -352,14 +360,14 @@ git push
    - TypeScript errors
    - Google Sheets API rate limit
 
-### CMS Login Issues
+### Content Editing Issues
 
 | Problem | Solution |
 |---------|----------|
-| "Authentication failed" | Check Git Gateway is enabled in Netlify |
-| Invite link expired | Resend invite from Netlify Dashboard |
-| "Page not found" on admin | Wait for deploy to complete, clear cache |
-| Can't save edits | Check user has write access in Netlify Identity |
+| Can't find edit button | Make sure you're logged into GitHub and have repository access |
+| Changes not appearing | Wait 2 minutes for build, then hard refresh (Ctrl+Shift+R) |
+| Build failed | Check GitHub Actions tab for error details |
+| Can't commit | Ensure you have write permissions to the repository |
 
 ### Content Not Updating
 
@@ -374,11 +382,11 @@ git push
 
 | File | Purpose | Key Settings |
 |------|---------|--------------|
-| `astro.config.mjs` | Astro settings | Site URL, integrations |
+| `astro.config.mjs` | Astro settings | Site URL, base path, integrations |
 | `tailwind.config.mjs` | Theme | Colors, fonts, spacing |
-| `public/admin/config.yml` | CMS config | Collections, fields, backend |
 | `src/content/config.ts` | Content schema | Zod validation for frontmatter |
 | `.env` | Secrets | Google Sheets credentials |
+| `.github/workflows/deploy.yml` | Deployment | GitHub Pages build and deploy |
 
 ---
 
@@ -386,25 +394,29 @@ git push
 
 | Task | Who | How |
 |------|-----|-----|
-| Edit page text | Content Editor | CMS at `/admin` |
-| Update service times | Admin | Google Sheet → Publish button |
+| Edit page text | Content Editor | GitHub → `src/content/pages/` → Edit |
+| Update service times | Admin | Google Sheet → "פרסם לאתר" button |
 | Change homepage | Developer | Edit `src/pages/index.astro` |
 | Add new page | Developer | Create `.astro` + `.md` files |
 | Change colors/fonts | Developer | Edit `tailwind.config.mjs` |
-| Add CMS user | Admin | Netlify Dashboard → Identity |
-| Deploy site | Automatic | Push to GitHub → Netlify builds |
+| Give edit access | Admin | GitHub Settings → Manage access |
+| Deploy site | Automatic | Push to GitHub → GitHub Actions builds |
 
 ---
 
 ## Migration Notes
 
-### From GitHub Pages to Netlify
+### From GitHub Pages + Netlify to Pure GitHub Pages
 
-- ✅ Hosting moved to Netlify
-- ✅ GitHub Actions workflow removed
-- ✅ CMS added with Decap + Netlify Identity
-- ✅ Content migrated to `src/content/pages/`
-- ✅ Google Sheets "Publish" button updated to use Netlify build hooks
+**Completed simplification (June 2026):**
+- ✅ Hosting moved from Netlify to GitHub Pages
+- ✅ GitHub Actions workflow created for deployment
+- ✅ Decap CMS removed (public/admin/ deleted)
+- ✅ Netlify Identity dependency removed
+- ✅ Content stays in `src/content/pages/` (edited directly on GitHub)
+- ✅ Google Sheets "Publish" button updated to trigger GitHub Actions
+
+**Result**: Everything lives in GitHub. No external services except Google Sheets API.
 
 ---
 

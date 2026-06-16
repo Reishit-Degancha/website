@@ -3,5 +3,6 @@ import tailwind from '@astrojs/tailwind';
 
 export default defineConfig({
   integrations: [tailwind()],
-  site: 'https://rdegancha.netlify.app',
+  site: 'https://reishit-degancha.github.io',
+  base: '/website',
 });

@@ -37,8 +37,8 @@ Welcome! This guide covers everything you need to know to develop, maintain, and
 | Styling | Tailwind CSS | Utility-first, RTL-friendly |
 | Font | Frank Ruhl Libre | Hebrew serif, elegant |
 | Content source | Google Sheets | Non-technical admins can edit |
-| Hosting | GitHub Pages | Free, integrates with repo |
-| Deployment | GitHub Actions | Auto-deploys on push |
+| Hosting | GitHub Pages | Free static hosting |
+| Deployment | GitHub Actions | Auto-deploys on push to GitHub Pages |
 | Publish trigger | Google Apps Script | "Publish" button in Sheets triggers rebuilds |
 
 ---
@@ -494,49 +494,46 @@ The page will be accessible at `/website/new-page` (replace dashes with your URL
 
 ---
 
-## Content Management System (CMS)
+## Editing Content
 
-The site includes a web-based Content Management System (Decap CMS) for editing page content without touching code.
+Content is stored as Markdown files in the repository. Since updates are rare, we edit directly on GitHub — no CMS needed.
 
-### What Can Be Edited via CMS
+### What Can Be Edited
 
-| Page | URL | Content |
-|------|-----|---------|
-| About | `/about` | About text, vision, rabbi bio |
-| Donate | `/donate` | Donation instructions, payment methods |
-| Room Rental | `/room-rental` | Hall info, amenities, contact |
-| Membership | `/membership` | Benefits, fees, welcome text |
-| Community | `/community` | Class schedule, activities |
+| Page | URL | File Location |
+|------|-----|---------------|
+| About | `/about` | `src/content/pages/about.md` |
+| Donate | `/donate` | `src/content/pages/donate.md` |
+| Room Rental | `/room-rental` | `src/content/pages/room-rental.md` |
+| Membership | `/membership` | `src/content/pages/membership.md` |
+| Community | `/community` | `src/content/pages/community.md` |
 
 ### What Requires Code Changes
 
-These changes **cannot** be made via CMS and require developer assistance:
+These require a developer:
 
-- **Homepage content** — Hero, features, CTAs (hardcoded by design)
-- **New pages** — Creating new routes requires code
+- **Homepage content** — Hero, features, CTAs (hardcoded)
+- **New pages** — Creating routes requires code
 - **Navigation links** — Header/Footer navigation
 - **Page structure** — Layout changes, new sections
 - **Styling changes** — Colors, fonts, spacing
 - **Contact information in footer** — Email, phone, address
 
-### How to Access the CMS
+### How to Edit Content on GitHub
 
-1. Visit: `https://rdegancha.netlify.app/admin/`
-2. Click "Login with Netlify Identity"
-3. Use your GitHub account or email/password
+1. Go to `https://github.com/Reishit-Degancha/website`
+2. Navigate to `src/content/pages/`
+3. Click the file to edit (e.g., `about.md`)
+4. Click the **pencil icon** (✎) in the top right
+5. Make your changes in the editor
+6. Scroll down and click **"Commit changes..."**
+7. Write a brief commit message (e.g., "Update rabbi bio")
+8. Click **"Commit changes"**
+9. Site rebuilds automatically (~2 minutes)
 
-### How to Edit Content
+**Tip**: Use the **Preview** tab to see how your markdown will look.
 
-1. **Select a page** from the "דפי תוכן" (Pages) collection
-2. **Edit content** in the WYSIWYG editor (like Google Docs)
-3. **Click "Publish"** to save changes immediately
-4. Changes are automatically committed to git and deployed
-
-**Note:** Changes go live immediately. There is no draft/approval workflow — make edits carefully.
-
-### Content Formatting Guide
-
-The editor supports Markdown formatting:
+### Markdown Formatting Guide
 
 | You Type | Result |
 |----------|--------|
@@ -546,22 +543,23 @@ The editor supports Markdown formatting:
 | `- item` | Bullet list |
 | `[text](url)` | [Link](url) |
 
-### Inviting New Content Editors
+### Giving Someone Edit Access
 
-1. Go to [Netlify Dashboard](https://app.netlify.com/)
-2. Select the site: `reishit-degancha-cms`
-3. Go to **Identity** → **Invite users**
-4. Enter email address
-5. User receives invitation email with login link
+1. Go to `https://github.com/Reishit-Degancha/website`
+2. Click **Settings** → **Manage access**
+3. Click **Invite a collaborator**
+4. Enter their GitHub username or email
+5. They receive an invitation email
+6. Once accepted, they can edit files directly
 
 ### Troubleshooting
 
 | Problem | Solution |
 |---------|----------|
-| Can't log in | Check invitation email and click link to set password |
-| Changes not appearing | Wait 2-3 minutes for build, then hard refresh (Ctrl+Shift+R) |
-| Page missing in CMS | Page may be code-only (homepage), contact developer |
-| Edit button disabled | Refresh the page and log in again |
+| Can't find edit button | Make sure you're logged into GitHub and have repository access |
+| Changes not appearing | Wait 2 minutes for build, then hard refresh (Ctrl+Shift+R) |
+| Build failed | Check GitHub Actions tab for error details |
+| Can't commit | Ensure you have write permissions to the repository |
 
 ---
 
@@ -580,7 +578,7 @@ The editor supports Markdown formatting:
   - Donation methods: bank details, PayPal, Bit (fill in real details)
 - [ ] Create a PDF/printable announcements sheet
 - [ ] Add Google Analytics or other analytics
-- [ ] Set up custom domain (currently at `reishit-degancha.github.io/website/`)
+- [ ] Set up custom domain (currently at `reishit-degancha.github.io/website/` or configure a custom domain in GitHub Pages settings)
 
 ---
 
@@ -588,10 +586,10 @@ The editor supports Markdown formatting:
 
 | What | Where | How |
 |------|-------|-----|
-| Change page content (About, Donate, etc.) | CMS at `/admin` | Log in → edit → publish |
+| Change page content (About, Donate, etc.) | GitHub → `src/content/pages/` | Edit file → commit |
 | Update service times | Google Sheet "times" tab | Edit → click "פרסם לאתר" |
 | Add announcement | Google Sheet "announcements" tab | Add row → click "פרסם לאתר" |
-| Deploy site | Push to main | Git commit → Netlify auto-deploys |
+| Deploy site | Push to main | Git commit → GitHub Actions auto-deploys to GitHub Pages |
 | Change colors/fonts | `src/styles/global.css` or `tailwind.config.mjs` | Edit → commit → push |
 | Change header/footer | `src/components/Header.astro` or `Footer.astro` | Edit → commit → push |
 | Deploy manually | GitHub Actions | Go to Actions → Run workflow |
