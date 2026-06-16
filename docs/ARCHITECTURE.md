@@ -5,24 +5,39 @@ A comprehensive guide to how the ראשית דגנך website works and how to ma
 ## Overview
 
 ```
-┌─────────────────┐     ┌─────────────────┐     ┌─────────────────┐
-│   Developer     │────▶│   GitHub Repo   │────▶│   Netlify       │
-│   (You)         │ push │                 │     │   (Builds & Hosts)│
-└─────────────────┘     └─────────────────┘     └─────────────────┘
-                              │                           │
-                              │     ┌─────────────────┐   │
-                              │     │   Decap CMS     │   │
-                              └──▶  │   (via Identity)│◀──┘
-                                    └─────────────────┘
-                                           │
-                                           ▼
-                                    ┌─────────────────┐
-                                    │   Content       │
-                                    │   Editors       │
-                                    └─────────────────┘
+┌──────────────────────────────────────────────────────────────────┐
+│                        NETLIFY SITE                              │
+│  https://rdegancha.netlify.app                                   │
+│  ┌────────────────────────────────────────────────────────────┐  │
+│  │ Built from GitHub repo → auto-deploys on every push       │  │
+│  │ Includes: /admin/ (Decap CMS editor)                       │  │
+│  └────────────────────────────────────────────────────────────┘  │
+└──────────────────────────────────────────────────────────────────┘
+           ▲                           ▲
+           │                           │
+    [Developer]               [Content Editors]
+    git push                   Use /admin/ to edit
+           │                           │
+           └───────────┬───────────────┘
+                       │
+                       ▼
+           ┌───────────────────────┐
+           │    GitHub Repo        │
+           │  (source of truth)    │
+           └───────────────────────┘
+                       ▲
+                       │
+              [Admin via Google Sheets]
+              Apps Script → GitHub webhook
 ```
 
-**One-sentence summary**: Push code to GitHub, Netlify builds and hosts the site; content editors use the web-based CMS at `/admin` to edit page content.
+**Three update paths:**
+
+| Who | Tool | Flow |
+|-----|------|------|
+| Developer | Code editor + git | Edit code → push → GitHub → Netlify auto-rebuilds |
+| Content Editor | Decap CMS at `/admin/` | Edit via web UI → saves to GitHub → Netlify auto-rebuilds |
+| Admin | Google Sheet + button | Edit times → click "Publish" → Apps Script → GitHub webhook → Netlify rebuilds |
 
 ---
 
