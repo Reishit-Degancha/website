@@ -1,10 +1,10 @@
 # ראשית דגנך
 
-[![Netlify Status](https://api.netlify.com/api/v1/badges/your-site-id/deploy-status)](https://app.netlify.com/sites/rdegancha/deploys)
+[![Deploy to GitHub Pages](https://github.com/Reishit-Degancha/website/actions/workflows/deploy.yml/badge.svg)](https://github.com/Reishit-Degancha/website/actions/workflows/deploy.yml)
 
-A Hebrew website for ראשית דגנך synagogue, built with Astro and hosted on Netlify.
+A Hebrew website for ראשית דגנך synagogue, built with Astro and hosted on GitHub Pages.
 
-**Live site**: [https://rdegancha.netlify.app](https://rdegancha.netlify.app)
+**Live site**: [https://reishit-degancha.github.io/website](https://reishit-degancha.github.io/website)
 
 ---
 
@@ -41,7 +41,7 @@ Visit `http://localhost:4321` for local development.
 ## Key Features
 
 - **Static Site**: Fast, SEO-friendly pages built with Astro
-- **CMS Integration**: Decap CMS at `/admin` for content editing
+- **Content in Git**: Markdown content stored in repository, edited on GitHub
 - **Hebrew RTL**: Full right-to-left support with Hebrew typography
 - **Responsive**: Mobile-friendly design
 - **Google Sheets**: Service times and announcements from spreadsheet
@@ -53,15 +53,17 @@ Visit `http://localhost:4321` for local development.
 ```
 src/
 ├── components/      # UI components (Header, Footer, etc.)
-├── content/         # CMS-managed content (Markdown)
+├── content/         # Markdown content pages
 ├── layouts/         # Page layouts
 ├── lib/             # Utilities (Google Sheets API)
 ├── pages/           # Route definitions
 └── styles/          # Global styles
 
 public/
-├── admin/           # Decap CMS files
-└── static assets    # Images, favicons
+└── static assets    # Images, favicons, etc.
+
+.github/workflows/
+└── deploy.yml       # GitHub Actions deployment
 ```
 
 ---
@@ -69,13 +71,14 @@ public/
 ## Content Editing
 
 **For content editors**:
-- Visit: `https://rdegancha.netlify.app/admin/`
-- Log in with Netlify Identity
-- Edit pages in the CMS
-- Click "Publish" to save changes
+- Go to [github.com/Reishit-Degancha/website](https://github.com/Reishit-Degancha/website)
+- Navigate to `src/content/pages/`
+- Click Edit (pencil icon) on the desired file
+- Make changes and click "Commit changes"
+- Changes go live within ~2 minutes
 
 **For developers**:
-- See [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) for CMS setup
+- See [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) for complete overview
 - Content is stored in `src/content/pages/*.md`
 
 ---
@@ -84,12 +87,12 @@ public/
 
 - [Astro](https://astro.build) - Static site generator
 - [Tailwind CSS](https://tailwindcss.com) - Styling
-- [Decap CMS](https://decapcms.org) - Content management
-- [Netlify](https://netlify.com) - Hosting & Identity
+- [GitHub Pages](https://pages.github.com) - Hosting
+- [GitHub Actions](https://github.com/features/actions) - Build & deployment
 - [Google Sheets API](https://developers.google.com/sheets) - Dynamic content
 
 ---
 
 ## License
 
-© 2025 ראשית דגנך. All rights reserved.
+© 2026 ראשית דגנך. All rights reserved.
