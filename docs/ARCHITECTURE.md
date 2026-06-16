@@ -63,7 +63,7 @@ website/
 │   │   ├── Footer.astro     # Footer with contact info
 │   │   └── ServiceTimes.astro # Dynamic service times display
 │   │
-│   ├── content/             # CMS-managed content
+│   ├── content/             # Markdown content files
 │   │   ├── config.ts        # Content collection schema
 │   │   └── pages/           # Editable page content
 │   │       ├── about.md
@@ -90,9 +90,6 @@ website/
 │       └── global.css       # Tailwind imports + custom styles
 │
 ├── public/                  # Static assets
-│   ├── admin/               # Decap CMS files
-│   │   ├── index.html       # CMS UI entry point
-│   │   └── config.yml       # CMS configuration
 │   ├── hero.png             # Homepage hero image
 │   └── favicon.*            # Site icons
 │
@@ -101,6 +98,10 @@ website/
 │   ├── ARCHITECTURE.md      # This file
 │   ├── CHANGELOG.md         # Version history
 │   └── APPS_SCRIPT.md       # Google Sheets integration docs
+│
+├── .github/
+│   └── workflows/
+│       └── deploy.yml       # GitHub Actions deployment
 │
 ├── astro.config.mjs         # Astro configuration
 ├── tailwind.config.mjs      # Tailwind theme + colors
@@ -111,29 +112,29 @@ website/
 
 ## How Content Flows
 
-### Code Changes (Developer → GitHub → Netlify)
+### Code Changes (Developer → GitHub → GitHub Actions)
 
 ```
 1. Edit file locally
 2. git commit && git push
-3. Netlify detects push
-4. Netlify runs: pnpm install && pnpm build
-5. Site deploys to https://rdegancha.netlify.app
+3. GitHub Actions workflow triggers
+4. Workflow runs: pnpm install && pnpm build
+5. Site deploys to GitHub Pages
 ```
 
-### CMS Content Changes (Editor → CMS → GitHub → Netlify)
+### Content Changes (Editor → GitHub → GitHub Actions)
 
 ```
-1. Editor visits https://rdegancha.netlify.app/admin/
-2. Logs in via Netlify Identity
-3. Edits page in WYSIWYG editor
-4. Clicks "Publish"
-5. Decap commits Markdown changes to GitHub
-6. Netlify detects commit
-7. Site rebuilds with new content
+1. Go to https://github.com/Reishit-Degancha/website
+2. Navigate to src/content/pages/
+3. Click Edit (pencil icon) on desired file
+4. Make changes in the markdown editor
+5. Click "Commit changes"
+6. GitHub Actions workflow triggers
+7. Site rebuilds and deploys with new content
 ```
 
-### Service Times (Google Sheets → Apps Script → GitHub → Netlify → Site)
+### Service Times (Google Sheets → Apps Script → GitHub Actions → Site)
 
 ```
 ┌─────────────────────────────────────────────────────────────────────────┐
@@ -168,7 +169,7 @@ website/
                   │ HTTP POST to GitHub
                   │
                   ▼
-3. GitHub Actions (Webhook triggered)
+3. GitHub Actions (Workflow triggered)
    ┌──────────────────────────────┐
    │ GitHub API                   │
    │ workflow_dispatch event      │
@@ -178,13 +179,13 @@ website/
                   │ Workflow starts
                   │
                   ▼
-4. Netlify Build (Rebuilds site)
+4. GitHub Actions Build
    ┌──────────────────────────────┐
    │ 1. pnpm install              │
    │ 2. Fetch from Google Sheets  │
    │    (getServiceTimes)         │
    │ 3. pnpm build                │
-   │ 4. Deploy dist/ to Netlify   │
+   │ 4. Deploy to GitHub Pages    │
    └──────────────────────────────┘
                   │
                   │ ~2 minutes
@@ -192,11 +193,12 @@ website/
                   ▼
 5. Live Site ✓
    ┌──────────────────────────────┐
-   │ https://rdegancha.netlify.app│
+   │ https://reishit-degancha.    │
+   │   github.io/website          │
    │ Shows updated times          │
    │                              │
-   │ "Admin saw confirmation,    │
-   │  changes live!"             │
+   │ "Admin saw confirmation,     │
+   │  changes live!"              │
    └──────────────────────────────┘
 ```
 
@@ -205,8 +207,8 @@ website/
 - Clicks "פרסם לאתר" in the Sheet
 - Google Apps Script authenticates with GitHub
 - GitHub Actions workflow triggers
-- Netlify builds the site (fetches fresh data from Sheets)
-- Site deplooys with new times
+- Workflow builds the site (fetches fresh data from Sheets)
+- Deploys to GitHub Pages
 - **Total time: ~2 minutes**
 
 ---
@@ -285,7 +287,7 @@ GOOGLE_SHEETS_API_KEY=your_api_key
 GOOGLE_SHEET_ID=your_sheet_id
 ```
 
-These are set in Netlify: Site settings → Environment variables
+These are set as GitHub repository secrets: Settings → Secrets and variables → Actions
 
 ### Sheet Structure
 
@@ -322,19 +324,6 @@ pnpm dev
 # 5. Visit http://localhost:4321
 ```
 
-### Testing CMS Locally
-
-```bash
-# Terminal 1: Start Astro
-pnpm dev
-
-# Terminal 2: Start Decap local server
-npx decap-server
-
-# Visit http://localhost:4321/admin/
-# No login required in local mode
-```
-
 ### Deploying Changes
 
 ```bash
@@ -354,9 +343,9 @@ git push
 
 ### Site Won't Build
 
-1. Check Netlify deploy log: Dashboard → Deploys → [Failed build]
+1. Check GitHub Actions log: Repository → Actions → [Failed workflow run]
 2. Common issues:
-   - Missing environment variables
+   - Missing environment variables (check repository secrets)
    - TypeScript errors
    - Google Sheets API rate limit
 
@@ -372,9 +361,9 @@ git push
 ### Content Not Updating
 
 1. Check if change was committed to GitHub (should show in commit history)
-2. Check Netlify deploy log for build errors
+2. Check GitHub Actions log for build errors
 3. Hard refresh browser (Ctrl+Shift+R)
-4. Check if page is CMS-editable vs hardcoded
+4. Check if content is in markdown files vs hardcoded in .astro files
 
 ---
 
@@ -458,4 +447,4 @@ If you need to recreate it:
 
 ---
 
-*Last updated: June 16, 2025*
+*Last updated: June 16, 2026*
