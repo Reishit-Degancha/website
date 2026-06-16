@@ -5,39 +5,33 @@ A comprehensive guide to how the ראשית דגנך website works and how to ma
 ## Overview
 
 ```
-┌──────────────────────────────────────────────────────────────────┐
-│                        NETLIFY SITE                              │
-│  https://rdegancha.netlify.app                                   │
-│  ┌────────────────────────────────────────────────────────────┐  │
-│  │ Built from GitHub repo → auto-deploys on every push       │  │
-│  │ Includes: /admin/ (Decap CMS editor)                       │  │
-│  └────────────────────────────────────────────────────────────┘  │
-└──────────────────────────────────────────────────────────────────┘
-           ▲                           ▲
-           │                           │
-    [Developer]               [Content Editors]
-    git push                   Use /admin/ to edit
-           │                           │
-           └───────────┬───────────────┘
-                       │
-                       ▼
-           ┌───────────────────────┐
-           │    GitHub Repo        │
-           │  (source of truth)    │
-           └───────────────────────┘
-                       ▲
-                       │
-              [Admin via Google Sheets]
-              Apps Script → GitHub webhook
+SOURCES              COMMITS               HOSTING
+
+┌──────────────┐                ┌──────────────┐        ┌──────────────┐
+│ Google Sheet │                │   GitHub     │        │   Netlify    │
+│ (Times)      │──→ commit ────▶│ Repository   │──→────▶│ Build, Test  │
+└──────────────┘    (via Apps   │ (Source of   │  Auto- │    & Deploy  │
+                     Script)     │   Truth)     │ build  │              │
+                                │              │        │ Live Site:   │
+┌──────────────┐                │              │        │ rdegancha.   │
+│ Decap CMS    │──→ commit ────▶│              │        │ netlify.app  │
+│ (Content)    │    (via Git)   │              │        │              │
+└──────────────┘                └──────────────┘        └──────────────┘
 ```
 
-**Three update paths:**
+**The flow:**
 
-| Who | Tool | Flow |
-|-----|------|------|
-| Developer | Code editor + git | Edit code → push → GitHub → Netlify auto-rebuilds |
-| Content Editor | Decap CMS at `/admin/` | Edit via web UI → saves to GitHub → Netlify auto-rebuilds |
-| Admin | Google Sheet + button | Edit times → click "Publish" → Apps Script → GitHub webhook → Netlify rebuilds |
+1. **Sources → GitHub** (left to middle)
+   - **Google Sheets**: Admin updates times → clicks "פרסם לאתר" → Apps Script makes API call → creates commit in GitHub
+   - **Decap CMS**: Editor makes changes → clicks "Publish" → automatically commits to GitHub
+
+2. **GitHub → Netlify** (middle to right)
+   - Every commit to GitHub triggers a build
+   - Netlify rebuilds the entire site
+   - Fresh data is fetched (from Google Sheets API)
+   - Site is deployed to the live URL
+
+**Result**: Whether updates come from Google Sheets or Decap CMS, they both end up as commits in GitHub, which automatically triggers a rebuild and deployment.
 
 ---
 
