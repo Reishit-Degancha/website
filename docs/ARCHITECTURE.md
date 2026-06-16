@@ -122,14 +122,81 @@ website/
 7. Site rebuilds with new content
 ```
 
-### Service Times (Google Sheets → Site)
+### Service Times (Google Sheets → Apps Script → GitHub → Netlify → Site)
 
 ```
-1. Admin updates Google Sheet (times tab)
-2. Clicks "פרסם לאתר" (Publish to Site) button
-3. Apps Script triggers GitHub Actions workflow
-4. (Note: Currently using old GitHub Pages flow - needs updating)
+┌─────────────────────────────────────────────────────────────────────────┐
+│                    ADMIN UPDATES SERVICE TIMES                          │
+└─────────────────────────────────────────────────────────────────────────┘
+
+1. Google Sheet (בדוק שינויים בגיליון)
+   ┌──────────────────────────────┐
+   │ Google Sheet                 │
+   │ - times tab (מקטע, אירוע...)  │
+   │ - announcements tab          │
+   └──────────────────────────────┘
+                  │
+                  │ Admin edits sheet
+                  │
+                  ▼
+   ┌──────────────────────────────┐
+   │ Clicks "אתר" → "פרסם לאתר"   │ (Publish to Site button)
+   └──────────────────────────────┘
+                  │
+                  │ Menu item triggers function
+                  │
+                  ▼
+2. Google Apps Script (פרסום לאתר)
+   ┌──────────────────────────────┐
+   │ publishToWebsite()           │
+   │ - Confirmation dialog        │
+   │ - Makes POST request to API  │
+   │ - Sends GitHub token         │
+   └──────────────────────────────┘
+                  │
+                  │ HTTP POST to GitHub
+                  │
+                  ▼
+3. GitHub Actions (Webhook triggered)
+   ┌──────────────────────────────┐
+   │ GitHub API                   │
+   │ workflow_dispatch event      │
+   │ → deploy.yml runs            │
+   └──────────────────────────────┘
+                  │
+                  │ Workflow starts
+                  │
+                  ▼
+4. Netlify Build (Rebuilds site)
+   ┌──────────────────────────────┐
+   │ 1. pnpm install              │
+   │ 2. Fetch from Google Sheets  │
+   │    (getServiceTimes)         │
+   │ 3. pnpm build                │
+   │ 4. Deploy dist/ to Netlify   │
+   └──────────────────────────────┘
+                  │
+                  │ ~2 minutes
+                  │
+                  ▼
+5. Live Site ✓
+   ┌──────────────────────────────┐
+   │ https://rdegancha.netlify.app│
+   │ Shows updated times          │
+   │                              │
+   │ "Admin saw confirmation,    │
+   │  changes live!"             │
+   └──────────────────────────────┘
 ```
+
+**Flow Summary**:
+- Admin edits Google Sheet
+- Clicks "פרסם לאתר" in the Sheet
+- Google Apps Script authenticates with GitHub
+- GitHub Actions workflow triggers
+- Netlify builds the site (fetches fresh data from Sheets)
+- Site deplooys with new times
+- **Total time: ~2 minutes**
 
 ---
 
@@ -328,7 +395,45 @@ git push
 - ✅ GitHub Actions workflow removed
 - ✅ CMS added with Decap + Netlify Identity
 - ✅ Content migrated to `src/content/pages/`
-- ⚠️ Google Sheets "Publish" button still references old GitHub Actions flow (needs updating)
+- ✅ Google Sheets "Publish" button updated to use Netlify build hooks
+
+---
+
+## Google Apps Script Details
+
+The "פרסם לאתר" button is powered by Google Apps Script.
+
+### Key Variables
+
+```javascript
+const GITHUB_OWNER = 'Reishit-Degancha';
+const GITHUB_REPO = 'website';
+const GITHUB_TOKEN = 'your_personal_access_token';
+```
+
+### What It Does
+
+1. **onOpen()** - Creates the "אתר" menu when sheet is opened
+2. **publishToWebsite()** - Main function that:
+   - Shows confirmation dialog
+   - Makes POST request to GitHub Actions
+   - Shows success/error message
+
+### Required Permissions
+
+The script needs:
+- `https://www.googleapis.com/auth/spreadsheets.currentonly` - Access to this sheet only
+- `https://www.googleapis.com/auth/script.external_request` - Make external HTTP requests
+
+### Backup & Recovery
+
+The complete script is backed up at `docs/APPS_SCRIPT.md` with setup instructions.
+
+If you need to recreate it:
+1. Extensions → Apps Script
+2. Copy code from `docs/apps-script.js`
+3. Update GITHUB_TOKEN with a new personal access token
+4. Save and reload the sheet
 
 ---
 
