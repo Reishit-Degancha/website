@@ -1,51 +1,95 @@
-# Astro Starter Kit: Minimal
+# ראשית דגנך
 
-```sh
-npm create astro@latest -- --template minimal
+[![Netlify Status](https://api.netlify.com/api/v1/badges/your-site-id/deploy-status)](https://app.netlify.com/sites/rdegancha/deploys)
+
+A Hebrew website for ראשית דגנך synagogue, built with Astro and hosted on Netlify.
+
+**Live site**: [https://rdegancha.netlify.app](https://rdegancha.netlify.app)
+
+---
+
+## Quick Start
+
+```bash
+# Install dependencies
+pnpm install
+
+# Start development server
+pnpm dev
+
+# Build for production
+pnpm build
 ```
 
-<!-- ASTRO:REMOVE:START -->
+Visit `http://localhost:4321` for local development.
 
-[![Open in StackBlitz](https://developer.stackblitz.com/img/open_in_stackblitz.svg)](https://stackblitz.com/github/withastro/astro/tree/latest/examples/minimal)
-[![Open with CodeSandbox](https://assets.codesandbox.io/github/button-edit-lime.svg)](https://codesandbox.io/p/sandbox/github/withastro/astro/tree/latest/examples/minimal)
-[![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://codespaces.new/withastro/astro?devcontainer_path=.devcontainer/minimal/devcontainer.json)
+---
 
-<!-- ASTRO:REMOVE:END -->
+## Documentation
 
-> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
+| Document | Purpose |
+|----------|---------|
+| [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) | How the site works, hosting, CMS, user management |
+| [docs/SETUP.md](docs/SETUP.md) | Developer setup guide |
+| [docs/CHANGELOG.md](docs/CHANGELOG.md) | Version history and changes |
+| [docs/APPS_SCRIPT.md](docs/APPS_SCRIPT.md) | Google Sheets integration |
 
-## 🚀 Project Structure
+**Start here**: [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) for a complete overview.
 
-Inside of your Astro project, you'll see the following folders and files:
+---
 
-```text
-/
-├── public/
-├── src/
-│   └── pages/
-│       └── index.astro
-└── package.json
+## Key Features
+
+- **Static Site**: Fast, SEO-friendly pages built with Astro
+- **CMS Integration**: Decap CMS at `/admin` for content editing
+- **Hebrew RTL**: Full right-to-left support with Hebrew typography
+- **Responsive**: Mobile-friendly design
+- **Google Sheets**: Service times and announcements from spreadsheet
+
+---
+
+## Project Structure
+
+```
+src/
+├── components/      # UI components (Header, Footer, etc.)
+├── content/         # CMS-managed content (Markdown)
+├── layouts/         # Page layouts
+├── lib/             # Utilities (Google Sheets API)
+├── pages/           # Route definitions
+└── styles/          # Global styles
+
+public/
+├── admin/           # Decap CMS files
+└── static assets    # Images, favicons
 ```
 
-Astro looks for `.astro` or `.md` files in the `src/pages/` directory. Each page is exposed as a route based on its file name.
+---
 
-There's nothing special about `src/components/`, but that's where we like to put any Astro/React/Vue/Svelte/Preact components.
+## Content Editing
 
-Any static assets, like images, can be placed in the `public/` directory.
+**For content editors**:
+- Visit: `https://rdegancha.netlify.app/admin/`
+- Log in with Netlify Identity
+- Edit pages in the CMS
+- Click "Publish" to save changes
 
-## 🧞 Commands
+**For developers**:
+- See [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) for CMS setup
+- Content is stored in `src/content/pages/*.md`
 
-All commands are run from the root of the project, from a terminal:
+---
 
-| Command                   | Action                                           |
-| :------------------------ | :----------------------------------------------- |
-| `npm install`             | Installs dependencies                            |
-| `npm run dev`             | Starts local dev server at `localhost:4321`      |
-| `npm run build`           | Build your production site to `./dist/`          |
-| `npm run preview`         | Preview your build locally, before deploying     |
-| `npm run astro ...`       | Run CLI commands like `astro add`, `astro check` |
-| `npm run astro -- --help` | Get help using the Astro CLI                     |
+## Tech Stack
 
-## 👀 Want to learn more?
+- [Astro](https://astro.build) - Static site generator
+- [Tailwind CSS](https://tailwindcss.com) - Styling
+- [Decap CMS](https://decapcms.org) - Content management
+- [Netlify](https://netlify.com) - Hosting & Identity
+- [Google Sheets API](https://developers.google.com/sheets) - Dynamic content
 
-Feel free to check [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
+---
+
+## License
+
+© 2025 ראשית דגנך. All rights reserved.
